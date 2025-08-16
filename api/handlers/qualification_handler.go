@@ -80,4 +80,5 @@ func UpdateQualificationHandler(ctx *gin.Context) {
 func AddQualificationEndPoints(router *gin.Engine) {
 	router.DELETE("/qualifications/:id", DeleteQualification)
 	router.POST("/qualifications/", CreateQualificationHandler)
+	router.PUT("/qualifications/:id", UpdateQualificationHandler)
 }
