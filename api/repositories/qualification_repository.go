@@ -9,8 +9,6 @@ import (
 	"github.com/hasona23/workis/api/validator"
 )
 
-const QUALIFICATIONS_TABLE = "qualifications"
-
 func CreateQualification(workerId int, cert string) error {
 	err := validator.ValidateQualification(models.Qualification{WorkerId: workerId, CertName: cert})
 	if err != nil {
@@ -55,7 +53,9 @@ func GetWorkerQualifications(workerId int) (qualifications []models.Qualificatio
 	for rows.Next() {
 		qualifications = append(qualifications, GetQualificationFromRow(rows))
 	}
+
 	return qualifications, nil
+
 }
 func DeleteQualification(id int) error {
 	delSQL := models.GetSqlScript("./sql/queries/qualifications/delete.sql")
@@ -92,7 +92,7 @@ func UpdateQualification(id int, qualification models.Qualification) error {
 		return err
 	}
 	_, err := models.DB.Exec(updateSQL,
-		qualification.WorkerId, qualification.CertName, qualification.IsActive, qualification.ID)
+		qualification.WorkerId, qualification.CertName, qualification.ID)
 	if err != nil {
 		return err
 	}
@@ -108,11 +108,10 @@ func GetQualificationFromRow(rows *sql.Rows) (qualification models.Qualification
 		id       int
 		workerId int
 		cert     string
-		isActive bool
 	)
 
 	// Scan in the CORRECT order matching your table schema
-	err := rows.Scan(&id, &workerId, &cert, &isActive)
+	err := rows.Scan(&id, &workerId, &cert)
 	if err != nil {
 		log.Printf("Error scanning row: %v", err)
 		return models.Qualification{} // Return empty worker on error
@@ -122,7 +121,6 @@ func GetQualificationFromRow(rows *sql.Rows) (qualification models.Qualification
 		ID:       id,
 		WorkerId: workerId,
 		CertName: cert,
-		IsActive: isActive,
 	}
 	return qualification
 }

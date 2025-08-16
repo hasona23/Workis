@@ -10,7 +10,6 @@ import (
 	"github.com/hasona23/workis/api/validator"
 )
 
-const WORKERS_TABLE = "workers"
 const TIME_LAYOUT = "2006-01-02 15:04:05 +0000 UTC"
 
 func CreateWorker(worker models.Worker) error {

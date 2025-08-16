@@ -74,13 +74,13 @@ func SeedWorkers() {
 	DB.Exec(addWorkersSQL, "Dodi bn mickey", getRandomDate(26), true, "CEO", getRandomSalary(), getRandomDate(1), MALE, "Business OXFORD BACHELORS", "MANAGE BUSINESS")
 	DB.Exec(addWorkersSQL, "Alex  ...", getRandomDate(26), true, "SECRETARY", getRandomSalary(), getRandomDate(1), FEMALE, "NONE", "Calls + paper work")
 
-	addQualificationSQL := `INSERT INTO Qualifications (WorkerId,CertName,IsActive) VALUES (?,?,?)`
+	addQualificationSQL := `INSERT INTO Qualifications (WorkerId,CertName) VALUES (?,?)`
 	for i := 0; i < 20; i++ {
 		cert_name := "Cert1"
 		if i%2 == 0 {
 			cert_name = "Cert2"
 		}
-		DB.Exec(addQualificationSQL, rand.Int32N(5), cert_name, !(i%5 == 0))
+		DB.Exec(addQualificationSQL, rand.Int32N(5), cert_name)
 	}
 
 }
