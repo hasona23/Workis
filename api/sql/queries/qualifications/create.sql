@@ -1,0 +1,1 @@
+INSERT INTO Qualifications (WorkerId,CertName,IsActive) VALUES (?,?,?)
