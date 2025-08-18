@@ -1,1 +1,0 @@
-SELECT * FROM Qualifications WHERE Id = ?

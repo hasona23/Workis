@@ -1,1 +1,0 @@
-INSERT INTO Workers (Name,Position,Salary,BirthDate,DateCreated,IsActive,Gender,Degree,JobDescription) VALUES (?,?,?,?,?,?,?,?,?)

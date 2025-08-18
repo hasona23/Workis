@@ -1,1 +1,0 @@
-UPDATE Qualifications SET WorkerId = ? , CertName = ? WHERE Id  = ?;
