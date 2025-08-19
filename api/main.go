@@ -4,22 +4,16 @@ import (
 	"fmt"
 
 	gin "github.com/gin-gonic/gin"
-	"github.com/hasona23/workis/api/model"
+	"github.com/hasona23/workis/api/models"
+	"github.com/hasona23/workis/api/repositories"
 )
 
 func main() {
 	fmt.Println("APP BEGIN")
-	model.InitDB()
-	model.SeedData()
-
-	fmt.Println(model.Db == nil)
-	var workers []model.Worker
-	model.Db.Preload("Qualifications").Find(&workers)
-	fmt.Println("Workers Count: ", len(workers))
-	fmt.Println("Workers: ")
-	for i := 0; i < len(workers); i++ {
-		fmt.Println(workers[i])
-	}
+	models.InitDB()
+	//models.SeedData(true)
+	repositories.DeleteWorker(11)
+	fmt.Println(len(repositories.GetAllWorkers()))
 
 	fmt.Println("APP END")
 }

@@ -1,8 +1,8 @@
-package model
+package models
 
 type Qualification struct {
 	ID       int
 	WorkerId int
 	CertName string
-	*Image
+	CertImg  Image `gorm:"embedded"`
 }
