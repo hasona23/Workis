@@ -1,18 +1,11 @@
 package services
 
 import (
-	"mime/multipart"
-
 	"github.com/hasona23/workis/api/models"
 	"github.com/hasona23/workis/api/repositories"
 )
 
-type FileRequest struct {
-	File   multipart.File
-	Header multipart.FileHeader
-}
-
-func CreateWorker(worker models.WorkerCreateRequest, faceImg FileRequest, idImg FileRequest) (err error) {
+func CreateWorker(worker models.WorkerCreateRequest, faceImg models.FileRequest, idImg models.FileRequest) (err error) {
 	err = worker.ValidateCreateWorkerRequest()
 	if err != nil {
 		return err
@@ -30,6 +23,16 @@ func CreateWorker(worker models.WorkerCreateRequest, faceImg FileRequest, idImg 
 		BirthDate:      worker.BirthDate,
 		HiredAt:        worker.HiredAt,
 	})
+	err = faceImg.SaveFile("./../web/imgs/", faceImg.Header.Filename)
+	if err != nil {
+		return err
+	}
+	err = idImg.SaveFile("./../web/imgs/", idImg.Header.Filename)
+	if err != nil {
+		return err
+	}
+	faceImg.Close()
+	idImg.Close()
 	return err
 }
 
@@ -64,7 +67,7 @@ func UpdateWorker(worker models.WorkerUpdateRequest) (err error) {
 	return err
 }
 
-func UpdateWokerImg(workerId int, img FileRequest, isFaceImg bool) error {
+func UpdateWokerImg(workerId int, img models.FileRequest, isFaceImg bool) error {
 	return nil
 }
 

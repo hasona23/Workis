@@ -1,6 +1,7 @@
 package handlers
 
 import (
+	"encoding/json"
 	"fmt"
 	"net/http"
 	"strconv"
@@ -13,12 +14,34 @@ import (
 func CreateWorker(c *gin.Context) {
 	var workerCreateRequest models.WorkerCreateRequest
 
-	if err := c.ShouldBind(&workerCreateRequest); err != nil {
+	if err := json.Unmarshal([]byte(c.Request.FormValue("ModelData")), &workerCreateRequest); err != nil {
 		handleError(c, http.StatusBadRequest, err)
 		return
 	}
+	fmt.Println(workerCreateRequest)
+	faceImg, faceImgHeader, err := c.Request.FormFile("faceImg")
 
-	err := services.CreateWorker(workerCreateRequest, services.FileRequest{}, services.FileRequest{})
+	if err != nil {
+		fmt.Println(err.Error())
+		return
+	} else {
+		fmt.Println(faceImgHeader.Filename, "  ", faceImgHeader.Size)
+	}
+	idImg, idImgHeader, err := c.Request.FormFile("idImg")
+	if err != nil {
+		fmt.Println(err.Error())
+		return
+	} else {
+		fmt.Println(idImgHeader.Filename, "  ", idImgHeader.Size)
+	}
+	faceImgFile := models.FileRequest{File: faceImg, Header: faceImgHeader}
+	idImgFile := models.FileRequest{File: idImg, Header: idImgHeader}
+
+	defer faceImg.Close()
+	defer idImg.Close()
+
+	err = services.CreateWorker(workerCreateRequest, faceImgFile, idImgFile)
+
 	if err != nil {
 		handleError(c, http.StatusInternalServerError, err)
 		return
