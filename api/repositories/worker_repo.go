@@ -37,6 +37,7 @@ func WorkerExistsID(id int) bool {
 func CreateWorker(worker models.Worker) (err error) {
 	err = models.Db.Create(&worker).Error
 	helpers.LogError(err)
+
 	return err
 }
 
@@ -53,19 +54,7 @@ func DeleteWorker(id int) (err error) {
 
 }
 func UpdateWorker(newWorker models.Worker) (err error) {
-	err = models.Db.Updates(&models.Worker{
-		ID:             newWorker.ID,
-		Name:           newWorker.Name,
-		Email:          newWorker.Email,
-		Address:        newWorker.Address,
-		Position:       newWorker.Position,
-		Degree:         newWorker.Degree,
-		JobDescription: newWorker.JobDescription,
-		Department:     newWorker.Department,
-		Salary:         newWorker.Salary,
-		FaceImg:        newWorker.FaceImg,
-		IdImg:          newWorker.IdImg,
-	}).Error
+	err = models.Db.Where("id = ?", newWorker.ID).Updates(newWorker).Error
 	helpers.LogError(err)
 	return err
 }

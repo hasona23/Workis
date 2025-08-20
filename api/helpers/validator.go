@@ -8,14 +8,14 @@ import (
 const EMAIL_REGEX = "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$"
 const PHONE_REGEX = "^[+]{1}[0-9]{10,15}$"
 
-func IsEmpty(str string, propertyName string) error {
+func NotEmpty(str string, propertyName string) error {
 	if len(str) == 0 {
 		return fmt.Errorf("%v cannot be empty", propertyName)
 	}
 	return nil
 }
 
-func CheckStringBounds(str string, propertyName string, min int, max int) error {
+func IsStringInBounds(str string, propertyName string, min int, max int) error {
 	if len(str) < min {
 		return fmt.Errorf("%v must be more than %v length", propertyName, min)
 	}
@@ -25,8 +25,8 @@ func CheckStringBounds(str string, propertyName string, min int, max int) error 
 	return nil
 }
 
-func IsEmail(str string) error {
-	match, _ := regexp.MatchString(str, EMAIL_REGEX)
+func IsValidEmail(str string) error {
+	match, _ := regexp.MatchString(EMAIL_REGEX, str)
 	if !match {
 		return fmt.Errorf("invalid email")
 	}
@@ -34,7 +34,7 @@ func IsEmail(str string) error {
 }
 
 func IsValidPhoneNumber(str string) error {
-	match, _ := regexp.MatchString(str, PHONE_REGEX)
+	match, _ := regexp.MatchString(PHONE_REGEX, str)
 	if !match {
 		return fmt.Errorf("invalid phone number. must start with \"+\" and then 10/15 numbers")
 	}

@@ -9,7 +9,6 @@ func UpdateQualification(newQualification models.Qualification) (err error) {
 	err = models.Db.Updates(&models.Qualification{
 		ID:       newQualification.ID,
 		CertName: newQualification.CertName,
-		CertImg:  newQualification.CertImg,
 	}).Error
 	helpers.LogError(err)
 	return err
@@ -24,4 +23,10 @@ func DeleteQualification(id int) (err error) {
 	err = models.Db.Delete(&models.Qualification{ID: id}).Error
 	helpers.LogError(err)
 	return err
+}
+
+func QualificationExistID(id int) bool {
+	var q models.Qualification
+	models.Db.First(&q, id)
+	return q.CertName != "" && q.ID != 0
 }
