@@ -4,23 +4,27 @@ import (
 	"errors"
 	"time"
 
+	"github.com/hasona23/workis/api/helpers"
 	"github.com/hasona23/workis/api/models"
 	"gorm.io/gorm"
 )
 
-func GetAllWorkers() (workers []models.Worker) {
-	models.Db.Where("deleted_at IS NULL").Find(&workers)
-	return workers
+func GetAllWorkers() (workers []models.Worker, err error) {
+	err = models.Db.Where("deleted_at IS NULL").Find(&workers).Error
+	helpers.LogError(err)
+	return workers, err
 }
 
-func GetAllWorkersWithQualifications() (workers []models.Worker) {
-	models.Db.Where("deleted_at IS NULL").Preload("Qualifications").Find(&workers)
-	return workers
+func GetAllWorkersWithQualifications() (workers []models.Worker, err error) {
+	err = models.Db.Where("deleted_at IS NULL").Preload("Qualifications").Find(&workers).Error
+	helpers.LogError(err)
+	return workers, err
 }
 
-func GetWorkerWithID(id int) (worker models.Worker) {
-	models.Db.Where("id = ?", id).Preload("Qualifications").First(&worker)
-	return worker
+func GetWorkerWithID(id int) (worker models.Worker, err error) {
+	err = models.Db.Where("id = ?", id).Preload("Qualifications").First(&worker).Error
+	helpers.LogError(err)
+	return worker, err
 }
 
 func WorkerExistsID(id int) bool {
@@ -30,19 +34,26 @@ func WorkerExistsID(id int) bool {
 	return worker.ID != 0 && !errors.Is(err, gorm.ErrRecordNotFound)
 }
 
-func CreateWorker(worker models.Worker) {
-	models.Db.Create(&worker)
+func CreateWorker(worker models.Worker) (err error) {
+	err = models.Db.Create(&worker).Error
+	helpers.LogError(err)
+	return err
 }
 
-func SoftDeleteWorker(id int) {
+func SoftDeleteWorker(id int) (err error) {
 	deletedTime := time.Now().UTC()
-	models.Db.Updates(&models.Worker{ID: id, DeletedAt: &deletedTime})
+	err = models.Db.Updates(&models.Worker{ID: id, DeletedAt: &deletedTime}).Error
+	helpers.LogError(err)
+	return err
 }
-func DeleteWorker(id int) {
-	models.Db.Select("Qualifications").Delete(&models.Worker{ID: id})
+func DeleteWorker(id int) (err error) {
+	err = models.Db.Select("Qualifications").Delete(&models.Worker{ID: id}).Error
+	helpers.LogError(err)
+	return err
+
 }
-func UpdateWorker(newWorker models.Worker) {
-	models.Db.Updates(&models.Worker{
+func UpdateWorker(newWorker models.Worker) (err error) {
+	err = models.Db.Updates(&models.Worker{
 		ID:             newWorker.ID,
 		Name:           newWorker.Name,
 		Email:          newWorker.Email,
@@ -54,8 +65,12 @@ func UpdateWorker(newWorker models.Worker) {
 		Salary:         newWorker.Salary,
 		FaceImg:        newWorker.FaceImg,
 		IdImg:          newWorker.IdImg,
-	})
+	}).Error
+	helpers.LogError(err)
+	return err
 }
-func ReviveWorker(id int) {
-	models.Db.Model(&models.Worker{}).Where("id = ?", id).Update("deleted_at", nil)
+func ReviveWorker(id int) (err error) {
+	err = models.Db.Model(&models.Worker{}).Where("id = ?", id).Update("deleted_at", nil).Error
+	helpers.LogError(err)
+	return err
 }

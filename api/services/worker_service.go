@@ -5,21 +5,25 @@ import (
 	"github.com/hasona23/workis/api/repositories"
 )
 
-func CreateWorker(worker models.WorkerCreateRequest) {
+func CreateWorker(worker models.WorkerCreateRequest) (err error) {
 
+	return err
 }
 
-func DeleteWorker(id int) {
+func DeleteWorker(id int) (err error) {
 	repositories.DeleteWorker(id)
+
+	return err
 }
 
-func UpdateWorker(worker models.WorkerUpdateRequest) {
+func UpdateWorker(worker models.WorkerUpdateRequest) (err error) {
 
+	return err
 }
 
-func GetAllWorkers(withQualifications bool) (workersGet []models.GetWorkerDto) {
+func GetAllWorkers() (workersGet []models.GetWorkerDto, err error) {
 
-	workers := repositories.GetAllWorkers()
+	workers, err := repositories.GetAllWorkers()
 
 	workersGet = make([]models.GetWorkerDto, len(workers))
 	for i, w := range workers {
@@ -34,11 +38,11 @@ func GetAllWorkers(withQualifications bool) (workersGet []models.GetWorkerDto) {
 			FaceImg:     w.FaceImg,
 		}
 	}
-	return workersGet
+	return workersGet, err
 }
 
-func GetWorkerByID(id int) models.GetWorkerDetailsDto {
-	worker := repositories.GetWorkerWithID(id)
+func GetWorkerByID(id int) (models.GetWorkerDetailsDto, error) {
+	worker, err := repositories.GetWorkerWithID(id)
 	return models.GetWorkerDetailsDto{
 		ID:             worker.ID,
 		Name:           worker.Name,
@@ -55,5 +59,5 @@ func GetWorkerByID(id int) models.GetWorkerDetailsDto {
 		FaceImg:        worker.FaceImg,
 		IdImg:          worker.IdImg,
 		Qualifications: worker.Qualifications,
-	}
+	}, err
 }

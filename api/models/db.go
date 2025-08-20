@@ -53,8 +53,8 @@ func SeedData(deletePrev bool) {
 		FaceImg:        Image{Type: JPEG, Path: "face_mikejack.jpg"},
 		IdImg:          Image{Type: PNG, Path: "id_mikejack.jpg"},
 		Qualifications: []Qualification{
-			{CertName: "Forklift Operator", CertImg: Image{Type: PNG, Path: "cert_forklift_mikejack.png"}},
-			{CertName: "Safety Training", CertImg: Image{Type: PNG, Path: "cert_safetytraining_mikejack.png"}},
+			{CertName: "Forklift Operator", CertImg: &Image{Type: PNG, Path: "cert_forklift_mikejack.png"}},
+			{CertName: "Safety Training", CertImg: &Image{Type: PNG, Path: "cert_safetytraining_mikejack.png"}},
 		},
 	})
 	Db.Create(&Worker{
@@ -73,8 +73,8 @@ func SeedData(deletePrev bool) {
 		FaceImg:        Image{Type: JPEG, Path: "face_annasmith.jpg"},
 		IdImg:          Image{Type: PNG, Path: "id_annasmith.jpg"},
 		Qualifications: []Qualification{
-			{CertName: "First Aid", CertImg: Image{Type: PNG, Path: "cert_firstaid_annasmith.png"}},
-			{CertName: "Safety Training", CertImg: Image{Type: PNG, Path: "cert_safetytraining_annasmith.png"}},
+			{CertName: "First Aid", CertImg: &Image{Type: PNG, Path: "cert_firstaid_annasmith.png"}},
+			{CertName: "Safety Training", CertImg: &Image{Type: PNG, Path: "cert_safetytraining_annasmith.png"}},
 		},
 	})
 	Db.Create(&Worker{
@@ -93,8 +93,8 @@ func SeedData(deletePrev bool) {
 		FaceImg:        Image{Type: JPEG, Path: "face_johndoe.jpg"},
 		IdImg:          Image{Type: PNG, Path: "id_johndoe.jpg"},
 		Qualifications: []Qualification{
-			{CertName: "Forklift Operator", CertImg: Image{Type: PNG, Path: "cert_forklift_johndoe.png"}},
-			{CertName: "Hazmat Handling", CertImg: Image{Type: PNG, Path: "cert_hazmat_johndoe.png"}},
+			{CertName: "Forklift Operator", CertImg: &Image{Type: PNG, Path: "cert_forklift_johndoe.png"}},
+			{CertName: "Hazmat Handling", CertImg: &Image{Type: PNG, Path: "cert_hazmat_johndoe.png"}},
 		},
 	})
 
@@ -109,8 +109,8 @@ func SeedData(deletePrev bool) {
 		FaceImg:        Image{Type: JPEG, Path: "face_annasmith.jpg"},
 		IdImg:          Image{Type: PNG, Path: "id_annasmith.jpg"},
 		Qualifications: []Qualification{
-			{CertName: "First Aid", CertImg: Image{Type: PNG, Path: "cert_firstaid_annasmith.png"}},
-			{CertName: "Safety Training", CertImg: Image{Type: PNG, Path: "cert_safetytraining_annasmith.png"}},
+			{CertName: "First Aid", CertImg: &Image{Type: PNG, Path: "cert_firstaid_annasmith.png"}},
+			{CertName: "Safety Training", CertImg: &Image{Type: PNG, Path: "cert_safetytraining_annasmith.png"}},
 		},
 	})
 	Db.Create(&Worker{
@@ -124,8 +124,8 @@ func SeedData(deletePrev bool) {
 		FaceImg:        Image{Type: JPEG, Path: "face_mikejack.jpg"},
 		IdImg:          Image{Type: PNG, Path: "id_mikejack.jpg"},
 		Qualifications: []Qualification{
-			{CertName: "Forklift Operator", CertImg: Image{Type: PNG, Path: "cert_forklift_mikejack.png"}},
-			{CertName: "Safety Training", CertImg: Image{Type: PNG, Path: "cert_safetytraining_mikejack.png"}},
+			{CertName: "Forklift Operator", CertImg: &Image{Type: PNG, Path: "cert_forklift_mikejack.png"}},
+			{CertName: "Safety Training", CertImg: &Image{Type: PNG, Path: "cert_safetytraining_mikejack.png"}},
 		},
 	})
 	Db.Create(&Worker{
@@ -139,8 +139,8 @@ func SeedData(deletePrev bool) {
 		FaceImg:        Image{Type: JPEG, Path: "face_johndoe.jpg"},
 		IdImg:          Image{Type: PNG, Path: "id_johndoe.jpg"},
 		Qualifications: []Qualification{
-			{CertName: "Forklift Operator", CertImg: Image{Type: PNG, Path: "cert_forklift_johndoe.png"}},
-			{CertName: "Hazmat Handling", CertImg: Image{Type: PNG, Path: "cert_hazmat_johndoe.png"}},
+			{CertName: "Forklift Operator", CertImg: &Image{Type: PNG, Path: "cert_forklift_johndoe.png"}},
+			{CertName: "Hazmat Handling", CertImg: &Image{Type: PNG, Path: "cert_hazmat_johndoe.png"}},
 		},
 	})
 	Db.Create(&Worker{
@@ -154,8 +154,8 @@ func SeedData(deletePrev bool) {
 		FaceImg:        Image{Type: JPEG, Path: "face_lisaray.jpg"},
 		IdImg:          Image{Type: PNG, Path: "id_lisaray.jpg"},
 		Qualifications: []Qualification{
-			{CertName: "Project Management", CertImg: Image{Type: PNG, Path: "cert_projectmanagement_lisaray.png"}},
-			{CertName: "Safety Training", CertImg: Image{Type: PNG, Path: "cert_safetytraining_lisaray.png"}},
+			{CertName: "Project Management", CertImg: &Image{Type: PNG, Path: "cert_projectmanagement_lisaray.png"}},
+			{CertName: "Safety Training", CertImg: &Image{Type: PNG, Path: "cert_safetytraining_lisaray.png"}},
 		},
 	})
 	Db.Create(&Worker{
@@ -169,8 +169,8 @@ func SeedData(deletePrev bool) {
 		FaceImg:        Image{Type: JPEG, Path: "face_tomlee.jpg"},
 		IdImg:          Image{Type: PNG, Path: "id_tomlee.jpg"},
 		Qualifications: []Qualification{
-			{CertName: "Electrical Certification", CertImg: Image{Type: PNG, Path: "cert_electrical_tomlee.png"}},
-			{CertName: "First Aid", CertImg: Image{Type: PNG, Path: "cert_firstaid_tomlee.png"}},
+			{CertName: "Electrical Certification", CertImg: &Image{Type: PNG, Path: "cert_electrical_tomlee.png"}},
+			{CertName: "First Aid", CertImg: &Image{Type: PNG, Path: "cert_firstaid_tomlee.png"}},
 		},
 	})
 }

@@ -4,5 +4,5 @@ type Qualification struct {
 	ID       int
 	WorkerId int
 	CertName string
-	CertImg  Image `gorm:"embedded"`
+	CertImg  *Image `gorm:"embedded"`
 }

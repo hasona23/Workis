@@ -50,7 +50,6 @@ type WorkerUpdateRequest struct {
 	JobDescription string
 	Department     string
 	Salary         int
-	BirthData      time.Time
 	FaceImg        Image
 	IdImg          Image
 }
