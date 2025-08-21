@@ -79,6 +79,24 @@ func UpdateWorker(worker models.WorkerUpdateRequest) (err error) {
 }
 
 func UpdateWokerImg(workerId int, img models.FileRequest, isFaceImg bool) error {
+	worker, err := repositories.GetWorkerWithID(workerId)
+	if err != nil {
+		return err
+	}
+	imgFile, err := ProcessImg(img)
+	if err != nil {
+		return err
+	}
+	if isFaceImg {
+		worker.FaceImg = &imgFile
+	} else {
+		worker.IdImg = &imgFile
+	}
+
+	err = repositories.UpdateWorker(worker)
+	if err != nil {
+		return err
+	}
 	return nil
 }
 

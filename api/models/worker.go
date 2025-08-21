@@ -39,8 +39,6 @@ type WorkerCreateRequest struct {
 	Salary         int
 	BirthDate      time.Time
 	HiredAt        time.Time
-	FaceImg        *Image `gorm:"embedded;embeddedPrefix:face_"`
-	IdImg          *Image `gorm:"embedded"`
 }
 type WorkerUpdateRequest struct {
 	ID             int

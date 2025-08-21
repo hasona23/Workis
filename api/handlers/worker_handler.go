@@ -18,7 +18,7 @@ func CreateWorker(c *gin.Context) {
 		handleError(c, http.StatusBadRequest, err)
 		return
 	}
-	fmt.Println(workerCreateRequest)
+
 	faceImg, faceImgHeader, err := c.Request.FormFile("faceImg")
 
 	if err != nil {
@@ -56,7 +56,6 @@ func GetAllWorkers(c *gin.Context) {
 		handleError(c, http.StatusInternalServerError, err)
 		return
 	}
-
 	c.JSON(http.StatusOK, workers)
 }
 func GetWorkerWithID(c *gin.Context) {
