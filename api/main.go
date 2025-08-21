@@ -12,23 +12,33 @@ func main() {
 	fmt.Println("APP BEGIN")
 	models.InitDB()
 	router := gin.Default()
-	handlers.AddWorkerHandler(router)
+	//config := cors.DefaultConfig()
+	//config.AllowAllOrigins = true // For testing - change this in production
+	//config.AllowCredentials = false
+	//config.AllowMethods = []string{"GET", "POST", "PUT", "PATCH", "DELETE", "HEAD", "OPTIONS"}
+	//config.AllowHeaders = []string{"Origin", "Content-Length", "Content-Type", "Authorization", "X-Requested-With"}
 
+	router.Use(CORSMiddleware())
+
+	handlers.AddWorkerHandler(router)
+	handlers.AddQualificationHandlers(router)
+	router.StaticFile("/", "./../web/index.html")
+	router.Static("/web/imgs/", "./../web/imgs")
 	router.Run("localhost:8080")
 	fmt.Println("APP END")
 }
 func CORSMiddleware() gin.HandlerFunc {
 	return func(c *gin.Context) {
-		c.Writer.Header().Set("Content-Type", "application/json")
 		c.Writer.Header().Set("Access-Control-Allow-Origin", "*")
-		c.Writer.Header().Set("Access-Control-Max-Age", "86400")
-		c.Writer.Header().Set("Access-Control-Allow-Methods", "POST, GET, OPTIONS, PUT, DELETE, UPDATE")
-		c.Writer.Header().Set("Access-Control-Allow-Headers", "Content-Type, Content-Length, Accept-Encoding, X-CSRF-Token, Authorization, X-Max")
-		c.Writer.Header().Set("Access-Control-Allow-Credentials", "true")
+		c.Writer.Header().Set("Access-Control-Allow-Credentials", "false")
+		c.Writer.Header().Set("Access-Control-Allow-Headers", "Content-Type, Content-Length, Accept-Encoding, X-CSRF-Token, Authorization, accept, origin, Cache-Control, X-Requested-With")
+		c.Writer.Header().Set("Access-Control-Allow-Methods", "POST, OPTIONS, GET, PUT")
+
 		if c.Request.Method == "OPTIONS" {
-			c.AbortWithStatus(200)
-		} else {
-			c.Next()
+			c.AbortWithStatus(204)
+			return
 		}
+
+		c.Next()
 	}
 }

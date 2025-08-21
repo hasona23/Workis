@@ -1,15 +1,32 @@
 package services
 
 import (
+	"os"
+	"path"
+	"path/filepath"
+
+	"github.com/google/uuid"
 	"github.com/hasona23/workis/api/models"
 	"github.com/hasona23/workis/api/repositories"
 )
+
+const IMG_DIR = "./../web/imgs"
 
 func CreateWorker(worker models.WorkerCreateRequest, faceImg models.FileRequest, idImg models.FileRequest) (err error) {
 	err = worker.ValidateCreateWorkerRequest()
 	if err != nil {
 		return err
 	}
+
+	faceImgFile, err := ProcessImg(faceImg)
+	if err != nil {
+		return err
+	}
+	idImgFile, err := ProcessImg(idImg)
+	if err != nil {
+		return err
+	}
+
 	repositories.CreateWorker(models.Worker{
 		Name:           worker.Name,
 		Email:          worker.Email,
@@ -22,15 +39,9 @@ func CreateWorker(worker models.WorkerCreateRequest, faceImg models.FileRequest,
 		Salary:         worker.Salary,
 		BirthDate:      worker.BirthDate,
 		HiredAt:        worker.HiredAt,
+		FaceImg:        &faceImgFile,
+		IdImg:          &idImgFile,
 	})
-	err = faceImg.SaveFile("./../web/imgs/", faceImg.Header.Filename)
-	if err != nil {
-		return err
-	}
-	err = idImg.SaveFile("./../web/imgs/", idImg.Header.Filename)
-	if err != nil {
-		return err
-	}
 	faceImg.Close()
 	idImg.Close()
 	return err
@@ -110,4 +121,30 @@ func GetWorkerByID(id int) (models.GetWorkerDetailsDto, error) {
 		IdImg:          worker.IdImg,
 		Qualifications: worker.Qualifications,
 	}, err
+}
+
+func ProcessImg(fr models.FileRequest) (models.Image, error) {
+
+makeFile:
+	fName := uuid.New().String() + filepath.Ext(fr.Header.Filename)
+	dirFiles, err := os.ReadDir("./../web/imgs")
+	if err != nil {
+		return models.Image{}, err
+	}
+	for _, f := range dirFiles {
+		if f.Name() == fName {
+			goto makeFile
+		}
+	}
+
+	err = fr.SaveFile(IMG_DIR, fName)
+	if err != nil {
+		return models.Image{}, err
+	}
+
+	return models.Image{
+		Path: path.Join(IMG_DIR, fName),
+		Type: filepath.Ext(fr.Header.Filename),
+		Size: fr.Header.Size,
+	}, nil
 }

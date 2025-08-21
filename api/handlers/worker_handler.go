@@ -124,16 +124,57 @@ func UpdateWorker(c *gin.Context) {
 
 	c.JSON(http.StatusNoContent, gin.H{"msg": "Worker updated successfuly"})
 }
+func UpdateWorkerImg(c *gin.Context) {
+	id, err := strconv.Atoi(c.Param("id"))
+	if err != nil {
+		handleError(c, http.StatusBadRequest, err)
+		return
+	}
+	isFaceImg, err := strconv.ParseBool(c.Query("isFaceImg"))
+	if err != nil {
+		handleError(c, http.StatusBadRequest, err)
+		return
+	}
+	var key string
+	if isFaceImg {
+		key = "faceImg"
+	} else {
+		key = "idImg"
+	}
+	imgFile, err := getImageFile(key, c)
+	if err != nil {
+		handleError(c, http.StatusBadRequest, err)
+		return
+	}
+	err = services.UpdateWokerImg(id, *imgFile, isFaceImg)
+	if err != nil {
+		handleError(c, http.StatusBadRequest, err)
+		return
+	}
+	c.JSON(http.StatusNoContent, gin.H{"msg": "worker updated successfuly"})
+}
 func AddWorkerHandler(router *gin.Engine) {
 	g := router.Group("/worker")
+
 	g.POST("/", CreateWorker)
 	g.GET("/", GetAllWorkers)
 	g.GET("/:id", GetWorkerWithID)
 	g.DELETE("/:id", SoftDeleteWorker)
 	g.PATCH("/:id", ReviveWorker)
+	g.PATCH("/img/:id", UpdateWorkerImg)
 	g.PUT("/:id", UpdateWorker)
+
 }
 
 func handleError(c *gin.Context, errorCode int, err error) {
 	c.JSON(errorCode, gin.H{"msg": fmt.Sprintf("Error: %v", err)})
+}
+
+func getImageFile(key string, c *gin.Context) (*models.FileRequest, error) {
+	img, imgHeader, err := c.Request.FormFile(key)
+	if err != nil {
+		return nil, err
+	}
+	imgFile := models.FileRequest{File: img, Header: imgHeader}
+	return &imgFile, nil
 }

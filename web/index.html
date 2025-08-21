@@ -1,11 +1,68 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Workis</title>
+    <title>Worker Manager</title>
 </head>
 <body>
-    
+    <h1>Workis</h1>
+    <button id="myButton">Load Workers</button>
+    <div id="workers"></div>
+    <div id="error-message" style="color: red;"></div>
+
+<script>
+async function loadWorkers(){
+    try {
+        console.log('Starting fetch request to http://localhost:8080/worker');
+        
+        const response = await fetch("http://localhost:8080/worker");
+        
+        console.log('Response status:', response.status);
+        console.log('Response headers:', response.headers);
+        
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        
+        const workers = await response.json();
+        console.log('Workers data:', workers);
+        
+        const workersDiv = document.getElementById("workers");
+        const errorDiv = document.getElementById("error-message");
+        
+        // Clear previous content
+        workersDiv.innerHTML = '';
+        errorDiv.innerHTML = '';
+        
+        if (workers && workers.length > 0) {
+            workers.forEach(element => {
+                // Use innerHTML instead of innerText for HTML content
+                workersDiv.innerHTML += `<div><h3>${element.Name}</h3><img src="./imgs/${element.FaceImg.Path}"></img></div>`
+            });
+        } else {
+            workersDiv.innerHTML = '<p>No workers found</p>';
+        }
+        
+    } catch (error) {
+        console.error('Error loading workers:', error);
+        const errorDiv = document.getElementById("error-message");
+        errorDiv.innerHTML = `Error: ${error.message}`;
+        
+        // More specific CORS error handling
+        if (error.message.includes('Failed to fetch') || error.message.includes('CORS')) {
+            errorDiv.innerHTML += '<br>This looks like a CORS issue. Make sure your backend is running and CORS is configured correctly.';
+        }
+    }
+}
+
+const myButton = document.getElementById('myButton');
+myButton.addEventListener('click', async () => {
+    console.log('Button clicked, initiating async operation...');
+    await loadWorkers();
+    console.log('Async operation completed.');
+});
+
+
+
+</script>
 </body>
 </html>
