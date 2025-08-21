@@ -1,6 +1,7 @@
 package services
 
 import (
+	"html"
 	"os"
 	"path"
 	"path/filepath"
@@ -28,14 +29,14 @@ func CreateWorker(worker models.WorkerCreateRequest, faceImg models.FileRequest,
 	}
 
 	repositories.CreateWorker(models.Worker{
-		Name:           worker.Name,
-		Email:          worker.Email,
-		PhoneNumber:    worker.PhoneNumber,
-		Address:        worker.Address,
-		Degree:         worker.Degree,
-		Position:       worker.Position,
-		JobDescription: worker.JobDescription,
-		Department:     worker.Department,
+		Name:           html.EscapeString(worker.Name),
+		Email:          html.EscapeString(worker.Email),
+		PhoneNumber:    html.EscapeString(worker.PhoneNumber),
+		Address:        html.EscapeString(worker.Address),
+		Degree:         html.EscapeString(worker.Degree),
+		Position:       html.EscapeString(worker.Position),
+		JobDescription: html.EscapeString(worker.JobDescription),
+		Department:     html.EscapeString(worker.Department),
 		Salary:         worker.Salary,
 		BirthDate:      worker.BirthDate,
 		HiredAt:        worker.HiredAt,
@@ -65,14 +66,14 @@ func UpdateWorker(worker models.WorkerUpdateRequest) (err error) {
 	}
 	err = repositories.UpdateWorker(models.Worker{
 		ID:             worker.ID,
-		Name:           worker.Name,
-		Email:          worker.Email,
-		PhoneNumber:    worker.PhoneNumber,
-		Address:        worker.Address,
-		Degree:         worker.Degree,
-		Position:       worker.Position,
-		JobDescription: worker.JobDescription,
-		Department:     worker.Department,
+		Name:           html.EscapeString(worker.Name),
+		Email:          html.EscapeString(worker.Email),
+		PhoneNumber:    html.EscapeString(worker.PhoneNumber),
+		Address:        html.EscapeString(worker.Address),
+		Degree:         html.EscapeString(worker.Degree),
+		Position:       html.EscapeString(worker.Position),
+		JobDescription: html.EscapeString(worker.JobDescription),
+		Department:     html.EscapeString(worker.Department),
 		Salary:         worker.Salary,
 	})
 	return err

@@ -2,6 +2,7 @@ package services
 
 import (
 	"fmt"
+	"html"
 
 	"github.com/hasona23/workis/api/helpers"
 	"github.com/hasona23/workis/api/models"
@@ -19,7 +20,7 @@ func CreateQualification(q models.QualificationCreateRequest) error {
 		return fmt.Errorf("worker with id %v doesnt exist", q.WorkerID)
 	}
 	err = repositories.CreateQualification(models.Qualification{
-		CertName: q.CertName,
+		CertName: html.EscapeString(q.CertName),
 		WorkerID: q.WorkerID,
 	})
 	if err != nil {
@@ -39,6 +40,6 @@ func UpdateQualification(q models.Qualification) error {
 		return err
 	}
 
-	err = repositories.UpdateQualification(models.Qualification{ID: q.ID, CertName: q.CertName})
+	err = repositories.UpdateQualification(models.Qualification{ID: q.ID, CertName: html.EscapeString(q.CertName)})
 	return err
 }

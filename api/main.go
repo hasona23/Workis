@@ -19,7 +19,6 @@ func main() {
 	//config.AllowHeaders = []string{"Origin", "Content-Length", "Content-Type", "Authorization", "X-Requested-With"}
 
 	router.Use(CORSMiddleware())
-
 	handlers.AddWorkerHandler(router)
 	handlers.AddQualificationHandlers(router)
 	router.StaticFile("/", "./../web/index.html")
