@@ -12,33 +12,23 @@ import (
 )
 
 func CreateWorker(c *gin.Context) {
-	var workerCreateRequest models.WorkerCreateRequest
 
+	var workerCreateRequest models.WorkerCreateRequest
 	if err := json.Unmarshal([]byte(c.Request.FormValue("ModelData")), &workerCreateRequest); err != nil {
 		handleError(c, http.StatusBadRequest, err)
 		return
 	}
 
-	faceImg, faceImgHeader, err := c.Request.FormFile("faceImg")
-
+	faceImgFile, err := getImageFile("faceImg", c)
 	if err != nil {
-		fmt.Println(err.Error())
+		handleError(c, http.StatusBadRequest, err)
 		return
-	} else {
-		fmt.Println(faceImgHeader.Filename, "  ", faceImgHeader.Size)
 	}
-	idImg, idImgHeader, err := c.Request.FormFile("idImg")
+	idImgFile, err := getImageFile("idImg", c)
 	if err != nil {
-		fmt.Println(err.Error())
+		handleError(c, http.StatusBadRequest, err)
 		return
-	} else {
-		fmt.Println(idImgHeader.Filename, "  ", idImgHeader.Size)
 	}
-	faceImgFile := models.FileRequest{File: faceImg, Header: faceImgHeader}
-	idImgFile := models.FileRequest{File: idImg, Header: idImgHeader}
-
-	defer faceImg.Close()
-	defer idImg.Close()
 
 	err = services.CreateWorker(workerCreateRequest, faceImgFile, idImgFile)
 
@@ -145,7 +135,7 @@ func UpdateWorkerImg(c *gin.Context) {
 		handleError(c, http.StatusBadRequest, err)
 		return
 	}
-	err = services.UpdateWokerImg(id, *imgFile, isFaceImg)
+	err = services.UpdateWokerImg(id, imgFile, isFaceImg)
 	if err != nil {
 		handleError(c, http.StatusBadRequest, err)
 		return
@@ -170,10 +160,14 @@ func handleError(c *gin.Context, errorCode int, err error) {
 }
 
 func getImageFile(key string, c *gin.Context) (*models.FileRequest, error) {
-	img, imgHeader, err := c.Request.FormFile(key)
+	imgHeader, err := c.FormFile(key)
+
 	if err != nil {
 		return nil, err
 	}
-	imgFile := models.FileRequest{File: img, Header: imgHeader}
+
+	imgFile := models.FileRequest{
+		Header: imgHeader,
+	}
 	return &imgFile, nil
 }

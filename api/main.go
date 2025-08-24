@@ -4,6 +4,7 @@ import (
 	"fmt"
 
 	gin "github.com/gin-gonic/gin"
+	"github.com/hasona23/workis/api/auth"
 	"github.com/hasona23/workis/api/handlers"
 	"github.com/hasona23/workis/api/models"
 )
@@ -11,14 +12,12 @@ import (
 func main() {
 	fmt.Println("APP BEGIN")
 	models.InitDB()
+	auth.CreateUserDB()
 	router := gin.Default()
-	//config := cors.DefaultConfig()
-	//config.AllowAllOrigins = true // For testing - change this in production
-	//config.AllowCredentials = false
-	//config.AllowMethods = []string{"GET", "POST", "PUT", "PATCH", "DELETE", "HEAD", "OPTIONS"}
-	//config.AllowHeaders = []string{"Origin", "Content-Length", "Content-Type", "Authorization", "X-Requested-With"}
 
-	router.Use(CORSMiddleware())
+	router.MaxMultipartMemory = 32 * 1024 * 1024
+	//router.Use(CORSMiddleware())
+	//router.MaxMultipartMemory = 8 << 2
 	handlers.AddWorkerHandler(router)
 	handlers.AddQualificationHandlers(router)
 	router.StaticFile("/", "./../web/index.html")
